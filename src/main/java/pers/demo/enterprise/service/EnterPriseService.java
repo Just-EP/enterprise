@@ -15,5 +15,5 @@ public interface EnterPriseService {
      * @param jsonPath json文件夹路径
      * @return result
      * */
-    List<EnterpriseBean> parseBeanFromJson(String jsonPath);
+    List<EnterpriseBean> parseBeanFromJsonAndSave(String jsonPath);
 }

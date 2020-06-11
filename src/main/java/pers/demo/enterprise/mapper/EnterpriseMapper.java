@@ -2,6 +2,7 @@ package pers.demo.enterprise.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+import pers.demo.enterprise.beans.EnterpriseListBean;
 
 /**
  * @author JustEP
@@ -13,5 +14,9 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface EnterpriseMapper {
-
+    /**
+     * 入库
+     * @param enterpriseListBean beans
+     * */
+    void insertEnterprise(EnterpriseListBean enterpriseListBean);
 }

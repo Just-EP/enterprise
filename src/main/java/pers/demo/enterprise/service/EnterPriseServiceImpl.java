@@ -1,16 +1,14 @@
 package pers.demo.enterprise.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONReader;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.springframework.stereotype.Service;
 import pers.demo.enterprise.beans.EnterpriseBean;
+import pers.demo.enterprise.beans.EnterpriseListBean;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -24,7 +22,8 @@ import java.util.Objects;
 public class EnterPriseServiceImpl implements EnterPriseService{
 
     @Override
-    public List<EnterpriseBean> parseBeanFromJson(String jsonPath) {
+    public List<EnterpriseBean> parseBeanFromJsonAndSave(String jsonPath) {
+        List<EnterpriseBean> enterpriseBeans = new ArrayList<>();
         File jsonFile = new File(jsonPath);
         Collection<File> files = FileUtils.listFiles(jsonFile, TrueFileFilter.TRUE, TrueFileFilter.TRUE);
         for (File file : files) {
@@ -35,9 +34,14 @@ public class EnterPriseServiceImpl implements EnterPriseService{
                 e.printStackTrace();
             }
             JSONReader jsonReader = new JSONReader(Objects.requireNonNull(reader));
-            EnterpriseBean enterpriseBean = jsonReader.readObject(EnterpriseBean.class);
-            System.out.println(enterpriseBean);
+            EnterpriseListBean enterpriseListBean = jsonReader.readObject(EnterpriseListBean.class);
+            enterpriseBeans.addAll(enterpriseListBean.getErDataList());
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        return null;
+        return enterpriseBeans;
     }
 }

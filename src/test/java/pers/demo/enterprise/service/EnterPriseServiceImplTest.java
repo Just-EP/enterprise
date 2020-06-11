@@ -5,6 +5,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import pers.demo.enterprise.beans.EnterpriseBean;
+
+import java.util.List;
 
 /**
  * @author JustEP
@@ -20,7 +23,8 @@ public class EnterPriseServiceImplTest {
 
     @Test
     public void parseBeanFromJson() {
-        String path = "D:\\资料\\Enterprise-Registration-Data-of-Chinese-Mainland-json\\Enterprise-Registration-Data";
-        service.parseBeanFromJson(path);
+        String path = "D:\\资料\\Enterprise-Registration-Data-of-Chinese-Mainland-json\\Enterprise-Registration-Data\\json\\2019";
+        List<EnterpriseBean> enterpriseBeans = service.parseBeanFromJsonAndSave(path);
+        System.out.println();
     }
 }
