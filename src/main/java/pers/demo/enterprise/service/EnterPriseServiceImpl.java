@@ -1,13 +1,19 @@
 package pers.demo.enterprise.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONReader;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.springframework.stereotype.Service;
 import pers.demo.enterprise.beans.EnterpriseBean;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author JustEP
@@ -22,8 +28,15 @@ public class EnterPriseServiceImpl implements EnterPriseService{
         File jsonFile = new File(jsonPath);
         Collection<File> files = FileUtils.listFiles(jsonFile, TrueFileFilter.TRUE, TrueFileFilter.TRUE);
         for (File file : files) {
-            String absolutePath = file.getAbsolutePath();
-            System.out.println(absolutePath);
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new FileReader(file));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            JSONReader jsonReader = new JSONReader(Objects.requireNonNull(reader));
+            EnterpriseBean enterpriseBean = jsonReader.readObject(EnterpriseBean.class);
+            System.out.println(enterpriseBean);
         }
         return null;
     }
