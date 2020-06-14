@@ -16,4 +16,12 @@ public interface EnterPriseService {
      * @return result
      * */
     List<EnterpriseBean> parseBeanFromJsonAndSave(String jsonPath);
+
+    /**
+     * 创建分表
+     * @param years 创建那些年的表格
+     * @param mainTableName 主表名
+     * @return 保留
+     * */
+    String createEnterPriseTables(List<String> years,String mainTableName);
 }

@@ -2,6 +2,7 @@ package pers.demo.enterprise.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+import pers.demo.enterprise.beans.EnterpriseBean;
 import pers.demo.enterprise.beans.EnterpriseListBean;
 
 /**
@@ -19,4 +20,11 @@ public interface EnterpriseMapper {
      * @param enterpriseListBean beans
      * */
     void insertEnterprise(EnterpriseListBean enterpriseListBean);
+    /**
+     * 插入一条
+     * @param bean 一条
+     * */
+    void insertOneEnterprise(EnterpriseBean bean);
+
+    void createTables(String tableName);
 }

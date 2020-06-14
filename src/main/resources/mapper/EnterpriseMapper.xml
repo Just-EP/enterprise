@@ -4,8 +4,29 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="pers.demo.enterprise.mapper.EnterpriseMapper">
     <insert id="insertEnterprise" parameterType="pers.demo.enterprise.beans.EnterpriseListBean">
-insert into base_enterprise_test values
-        <foreach collection="erDataList" item="item">
-                                        ()</foreach>
+        insert into ${tableName} (id,name, code, reg_day, legal_rep, capital, busi_scope, province, city, address) values
+        <foreach collection="erDataList" item="item" separator =",">
+                (#{item.id},#{item.name},#{item.code},#{item.registrationDay},#{item.legalRepresentative},#{item.capital},#{item.businessScope},#{item.province},#{item.city},#{item.address})
+        </foreach>
     </insert>
+    <insert id="insertOneEnterprise" parameterType="pers.demo.enterprise.beans.EnterpriseBean">
+        insert into base_enterprise_test (id,name, code, reg_day, legal_rep, capital, busi_scope, province, city, address) values
+        (#{item.id},#{name},#{code},#{registrationDay},#{legalRepresentative},#{capital},#{businessScope},#{province},#{city},#{address})
+    </insert>
+    <update id="createTables" parameterType="string">
+        CREATE TABLE ${string}  (
+                                                 `id` bigint(0) NOT NULL COMMENT '主键',
+                                                 `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '企业名称',
+                                                 `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '统一社会信用代码',
+                                                 `reg_day` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '注册日期',
+                                                 `legal_rep` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '法人代表',
+                                                 `capital` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '注册资金',
+                                                 `busi_scope` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '经营范围',
+                                                 `province` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '所在省份',
+                                                 `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '地区',
+                                                 `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '注册地址',
+                                                 PRIMARY KEY (`id`) USING BTREE,
+                                                 UNIQUE INDEX `index_id`(`id`) USING BTREE COMMENT '主键索引'
+        ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic
+    </update>
 </mapper>
