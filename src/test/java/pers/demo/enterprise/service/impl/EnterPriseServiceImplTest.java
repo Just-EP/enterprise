@@ -1,12 +1,12 @@
-package pers.demo.enterprise.service;
+package pers.demo.enterprise.service.impl;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pers.demo.enterprise.beans.EnterpriseBean;
+import pers.demo.enterprise.service.EnterPriseService;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +19,15 @@ import java.util.List;
 @SpringBootTest
 public class EnterPriseServiceImplTest {
 
-    @Autowired
+    @Resource(name = "serviceMySql")
     private EnterPriseService service;
 
     @Test
     public void parseBeanFromJson() {
 //        String path = "D:\\资料\\Enterprise-Registration-Data-of-Chinese-Mainland-json\\Enterprise-Registration-Data\\json";
         String path = "D:\\资料\\Enterprise-Registration-Data-of-Chinese-Mainland-json\\Enterprise-Registration-Data\\error";
-        List<EnterpriseBean> enterpriseBeans = service.parseBeanFromJsonAndSave(path);
-        System.out.println();
+        Boolean aBoolean = service.parseBeanFromJsonAndSave(path);
+        System.out.println(aBoolean);
     }
     @Test
     public void testCreateEnterPriseTables(){

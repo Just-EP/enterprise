@@ -1,5 +1,8 @@
 package pers.demo.enterprise.beans;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import pers.demo.enterprise.utils.SnowflakeIdWorker;
 import pers.demo.enterprise.utils.SpringUtil;
 
@@ -18,17 +21,29 @@ import java.util.Objects;
  *     "city":"地区",
  *     "address":"注册地址"
  * */
+@Document(collection="enterprise_info")
 public class EnterpriseBean{
+    @Id
     private Long id;
+    @Field("character")
     private String character;
+    @Field("legal_representative")
     private String legalRepresentative;
+    @Field("capital")
     private String capital;
+    @Field("code")
     private String code;
+    @Field("address")
     private String address;
+    @Field("province")
     private String province;
+    @Field("city")
     private String city;
+    @Field("name")
     private String name;
+    @Field("business_scope")
     private String businessScope;
+    @Field("registration_day")
     private String registrationDay;
 
 

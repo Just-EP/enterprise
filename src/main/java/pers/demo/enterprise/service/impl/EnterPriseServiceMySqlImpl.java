@@ -1,6 +1,5 @@
-package pers.demo.enterprise.service;
+package pers.demo.enterprise.service.impl;
 
-import com.alibaba.fastjson.JSONReader;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -10,14 +9,15 @@ import org.springframework.stereotype.Service;
 import pers.demo.enterprise.beans.EnterpriseBean;
 import pers.demo.enterprise.beans.EnterpriseListBean;
 import pers.demo.enterprise.mapper.EnterpriseMapper;
+import pers.demo.enterprise.service.EnterPriseService;
+import pers.demo.enterprise.utils.EnterpriseBeanUtil;
 
-import java.io.*;
+import java.io.File;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -25,19 +25,19 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @date 2020/6/10 23:29
  */
-@Service
+@Service("serviceMySql")
 @Slf4j
-public class EnterPriseServiceImpl implements EnterPriseService{
+public class EnterPriseServiceMySqlImpl implements EnterPriseService {
 
     private final EnterpriseMapper mapper;
 
     @Autowired
-    public EnterPriseServiceImpl(EnterpriseMapper mapper) {
+    public EnterPriseServiceMySqlImpl(EnterpriseMapper mapper) {
         this.mapper = mapper;
     }
 
     @Override
-    public List<EnterpriseBean> parseBeanFromJsonAndSave(String jsonPath) {
+    public Boolean parseBeanFromJsonAndSave(String jsonPath) {
         LocalDateTime startTime = LocalDateTime.now();
         log.info("startTime:{}",startTime);
         List<EnterpriseBean> enterpriseBeans = new ArrayList<>();
@@ -46,15 +46,7 @@ public class EnterPriseServiceImpl implements EnterPriseService{
         for (File file : files) {
             LocalDateTime oneFileStartTime = LocalDateTime.now();
             log.info("startTime:{} 解析并存储start:{}",oneFileStartTime,file);
-            BufferedReader reader = null;
-            try {
-                reader = new BufferedReader(new FileReader(file));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            JSONReader jsonReader = new JSONReader(Objects.requireNonNull(reader));
-            EnterpriseListBean enterpriseListBean = jsonReader.readObject(EnterpriseListBean.class);
-            List<EnterpriseBean> erDataList = enterpriseListBean.getErDataList();
+            List<EnterpriseBean> erDataList = EnterpriseBeanUtil.getBeanFromFile(file);
             List<List<EnterpriseBean>> partitionBeans = Lists.partition(erDataList, 1000);
             partitionBeans.stream().map(partitionBean -> {
                 EnterpriseListBean listBean = new EnterpriseListBean();
@@ -67,11 +59,6 @@ public class EnterPriseServiceImpl implements EnterPriseService{
                     e.printStackTrace();
                 }
             });
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             LocalDateTime oneFileEndTime = LocalDateTime.now();
             log.info("endTime:{} 解析并存储end:{}",oneFileEndTime,file);
             log.info("耗时:{}秒", Duration.between(oneFileStartTime,oneFileEndTime).toMillis()/1000.0);
@@ -79,7 +66,12 @@ public class EnterPriseServiceImpl implements EnterPriseService{
         LocalDateTime endTime = LocalDateTime.now();
         log.info("endTime:{}",endTime);
         log.info("总耗时:{}秒", Duration.between(startTime,endTime).toMillis()/1000.0);
-        return enterpriseBeans;
+        return true;
+    }
+
+    @Override
+    public List<EnterpriseBean> findEnterPrisesByCondition(String filedName) {
+        return null;
     }
 
     @Override

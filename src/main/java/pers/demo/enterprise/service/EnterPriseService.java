@@ -15,7 +15,14 @@ public interface EnterPriseService {
      * @param jsonPath json文件夹路径
      * @return result
      * */
-    List<EnterpriseBean> parseBeanFromJsonAndSave(String jsonPath);
+    Boolean parseBeanFromJsonAndSave(String jsonPath);
+
+    /**
+     * 以某个字段为条件查询
+     * @param filedName 字段名称
+     * @return result
+     * */
+    List<EnterpriseBean> findEnterPrisesByCondition(String filedName);
 
     /**
      * 创建分表
